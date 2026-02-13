@@ -15,47 +15,72 @@
     a.yes { background: #ff2d55; color: white; }
     a.no  { background: #f2f2f7; color: #111; border-color: #ddd; }
     a.btn:active { transform: translateY(1px); }
-    .hint { margin-top: 12px; font-size: 13px; color: #666; }
   </style>
 </head>
 <body>
   <div class="card">
-    <img id="pageImage" src="images/quest_for_camelot_mirror.gif" alt="Valentine image" />
+    <img id="pageImage" src="" alt="" />
 
-    <h1 id="headline">Yay!! 💞</h1>
-    <p id="subtext">Now just to confirm…</p>
+    <h1 id="headline"></h1>
+    <p id="subtext"></p>
 
-    <h1>Will you be my valentine? 💘</h1>
-
-    <div class="buttons">
-      <a class="btn yes" href="choice.html?answer=yes">Yes</a>
-      <a class="btn no"  href="choice.html?answer=no">No</a>
-    </div>
-
-    <div class="hint">
-      Put images in <code>images/</code>. Default uses <code>yes.jpg</code> for Yes and <code>no.jpg</code> for No.
+    <div class="buttons" id="buttons">
+      <a class="btn yes" id="yesBtn" href="choice.html?answer=yes">Yes</a>
+      <a class="btn no"  id="noBtn"  href="choice.html?answer=no&n=1">No</a>
     </div>
   </div>
 
   <script>
-    // Read ?answer=yes or ?answer=no
     const params = new URLSearchParams(window.location.search);
-    const answer = (params.get("answer") || "yes").toLowerCase();
+    const answer = (params.get("answer") || "no").toLowerCase();
+    const n = Math.max(1, parseInt(params.get("n") || "1", 10) || 1);
 
     const headline = document.getElementById("headline");
     const subtext = document.getElementById("subtext");
     const pageImage = document.getElementById("pageImage");
+    const buttons = document.getElementById("buttons");
+    const noBtn = document.getElementById("noBtn");
 
-    if (answer === "no") {
-      headline.textContent = "Wait… are you sure? 🥺";
-      subtext.textContent = "I’ll ask again (politely).";
-      pageImage.src = "images/ron_unsure.gif";   // <-- your NO image
-      pageImage.alt = "No image";
+    // Customize your escalating "No" placeholders here
+    const noHeadlines = [
+      "I think you hit the wrong button...",
+      "No again? 😐",
+      "Okay, but like… try Yes?",
+      "I’m going to pretend you didn’t mean that.",
+      "Last chance before I start crying.",
+      "Alright this is getting ridiculous 😂"
+    ];
+
+    const noSubtexts = [
+      "Let’s try that again (politely).",
+      "Your finger slipped. It happens.",
+      "We can redo this. I believe in you.",
+      "I’m giving you a mulligan.",
+      "Be serious.",
+      "Choose wisely."
+    ];
+
+    if (answer === "yes") {
+      // YES -> final gif + your comments
+      pageImage.src = "images/quest_for_camelot_final_yes.gif";
+      pageImage.alt = "Yes gif";
+
+      headline.textContent = "finally";
+      subtext.textContent = "jesus christ dude";
+
+      // Optional: hide buttons on the final yes screen
+      buttons.style.display = "none";
     } else {
-      headline.textContent = "Yay!! 💞";
-      subtext.textContent = "Best answer ever. One more time just because.";
-      pageImage.src = "images/ron_unsure.gif";  // <-- your YES image
-      pageImage.alt = "Yes image";
+      // NO -> ron unsure gif + escalating text
+      pageImage.src = "images/ron_unsure.gif";
+      pageImage.alt = "No gif";
+
+      const idx = Math.min(n - 1, noHeadlines.length - 1);
+      headline.textContent = noHeadlines[idx];
+      subtext.textContent = noSubtexts[idx];
+
+      // Next "No" increments the counter
+      noBtn.href = `choice.html?answer=no&n=${n + 1}`;
     }
   </script>
 </body>
