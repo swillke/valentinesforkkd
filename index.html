@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Valentine?</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 0; min-height: 100vh; display: grid; place-items: center; background: #fff5f7; }
+    .card { width: min(720px, 92vw); background: white; border-radius: 20px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,.08); text-align: center; }
+    h1 { margin: 12px 0 6px; font-size: clamp(26px, 3.6vw, 38px); }
+    p { margin: 0 0 16px; color: #444; font-size: 16px; }
+    img { width: 100%; max-height: 360px; object-fit: cover; border-radius: 16px; }
+    .buttons { margin-top: 18px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    a.btn { text-decoration: none; padding: 12px 18px; border-radius: 999px; font-weight: 700; border: 2px solid transparent; }
+    a.yes { background: #ff2d55; color: white; }
+    a.no  { background: #f2f2f7; color: #111; border-color: #ddd; }
+    a.btn:active { transform: translateY(1px); }
+    .hint { margin-top: 12px; font-size: 13px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img id="pageImage" src="images/yes.jpg" alt="Valentine image" />
+
+    <h1 id="headline">Yay!! 💞</h1>
+    <p id="subtext">Now just to confirm…</p>
+
+    <h1>Will you be my valentine? 💘</h1>
+
+    <div class="buttons">
+      <a class="btn yes" href="choice.html?answer=yes">Yes</a>
+      <a class="btn no"  href="choice.html?answer=no">No</a>
+    </div>
+
+    <div class="hint">
+      Put images in <code>images/</code>. Default uses <code>yes.jpg</code> for Yes and <code>no.jpg</code> for No.
+    </div>
+  </div>
+
+  <script>
+    // Read ?answer=yes or ?answer=no
+    const params = new URLSearchParams(window.location.search);
+    const answer = (params.get("answer") || "yes").toLowerCase();
+
+    const headline = document.getElementById("headline");
+    const subtext = document.getElementById("subtext");
+    const pageImage = document.getElementById("pageImage");
+
+    if (answer === "no") {
+      headline.textContent = "Wait… are you sure? 🥺";
+      subtext.textContent = "I’ll ask again (politely).";
+      pageImage.src = "images/no.jpg";   // <-- your NO image
+      pageImage.alt = "No image";
+    } else {
+      headline.textContent = "Yay!! 💞";
+      subtext.textContent = "Best answer ever. One more time just because.";
+      pageImage.src = "images/yes.jpg";  // <-- your YES image
+      pageImage.alt = "Yes image";
+    }
+  </script>
+</body>
+</html>
