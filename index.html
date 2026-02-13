@@ -22,10 +22,10 @@
   <div class="card">
     <img id="pageImage" src="images/quest_for_camelot_mirror.gif" alt="Valentine image" />
 
-    <h1 id="headline">Yay!! 💞</h1>
+    <h1 id="headline"></h1>
     <p id="subtext">Now just to confirm…</p>
 
-    <h1>Will you be my valentine? 💘</h1>
+    <h1>Will you be my valentine? </h1>
 
     <div class="buttons">
       <a class="btn yes" href="choice.html?answer=yes">Yes</a>
@@ -47,14 +47,14 @@
     const pageImage = document.getElementById("pageImage");
 
     if (answer === "no") {
-      headline.textContent = "Wait… are you sure? 🥺";
+      headline.textContent = "I think you hit the wrong button...";
       subtext.textContent = "I’ll ask again (politely).";
       pageImage.src = "images/ron_unsure.gif";   // <-- your NO image
       pageImage.alt = "No image";
     } else {
-      headline.textContent = "Yay!! 💞";
-      subtext.textContent = "Best answer ever. One more time just because.";
-      pageImage.src = "images/ron_unsure.gif";  // <-- your YES image
+      headline.textContent = "finally";
+      subtext.textContent = "jesus christ dude";
+      pageImage.src = "images/quest_for_camelot_final_yes.gif";  // <-- your YES image
       pageImage.alt = "Yes image";
     }
   </script>
