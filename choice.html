@@ -44,7 +44,7 @@
     // Customize your escalating "No" placeholders here
     const noHeadlines = [
       "I think you hit the wrong button...",
-      "No again? 😐",
+      "alright time to clean up the shenaningans",
       "Okay, but like… try Yes?",
       "I’m going to pretend you didn’t mean that.",
       "Last chance before I start crying.",
@@ -71,16 +71,18 @@
       // Optional: hide buttons on the final yes screen
       buttons.style.display = "none";
     } else {
-      // NO -> ron unsure gif + escalating text
-      pageImage.src = "images/ron_unsure.gif";
-      pageImage.alt = "No gif";
+    // NO -> rotate through different NO gifs
+    const noGifs = [
+      "images/ron_unsure.gif",
+      "images/dead_broad_off_the_table.gif",
+      "images/ron_unsure.gif",
+      "images/ron_unsure.gif"
+    ];
 
-      const idx = Math.min(n - 1, noHeadlines.length - 1);
-      headline.textContent = noHeadlines[idx];
-      subtext.textContent = noSubtexts[idx];
-
-      // Next "No" increments the counter
-      noBtn.href = `choice.html?answer=no&n=${n + 1}`;
+    // Pick gif based on how many times "No" was clicked
+    const gifIndex = Math.min(n - 1, noGifs.length - 1);
+    pageImage.src = noGifs[gifIndex];
+    pageImage.alt = "No gif";
     }
   </script>
 </body>
