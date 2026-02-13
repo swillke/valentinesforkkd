@@ -14,7 +14,6 @@
     a.btn { text-decoration: none; padding: 12px 18px; border-radius: 999px; font-weight: 700; border: 2px solid transparent; }
     a.yes { background: #ff2d55; color: white; }
     a.no  { background: #f2f2f7; color: #111; border-color: #ddd; }
-    a.btn:active { transform: translateY(1px); }
   </style>
 </head>
 <body>
@@ -31,46 +30,46 @@
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const answer = (params.get("answer") || "no").toLowerCase();
-    const n = Math.max(1, parseInt(params.get("n") || "1", 10) || 1);
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const answer = (params.get("answer") || "no").toLowerCase();
+      const n = Math.max(1, parseInt(params.get("n") || "1", 10) || 1);
 
-    const headline = document.getElementById("headline");
-    const subtext = document.getElementById("subtext");
-    const pageImage = document.getElementById("pageImage");
-    const buttons = document.getElementById("buttons");
-    const noBtn = document.getElementById("noBtn");
+      const headline = document.getElementById("headline");
+      const subtext  = document.getElementById("subtext");
+      const pageImage = document.getElementById("pageImage");
+      const buttons = document.getElementById("buttons");
+      const noBtn = document.getElementById("noBtn");
 
-    const noHeadlines = [
-      "I think you hit the wrong button...",
-      "alright time to clean up the shenaningans",
-      "Okay, but like… try Yes?",
-      "I’m going to pretend you didn’t mean that.",
-      "Last chance before I start crying.",
-      "Alright this is getting ridiculous 😂"
-    ];
+      // HARD FAIL with a visible message if IDs aren’t found (this is your “it’s definitely broken” indicator)
+      if (!headline || !subtext || !pageImage || !buttons || !noBtn) {
+        document.body.innerHTML = `
+          <div style="font-family:system-ui; padding:20px;">
+            <h2>Page markup mismatch</h2>
+            <p>One of the required elements is missing (headline/subtext/pageImage/buttons/noBtn).</p>
+            <p>That usually means GitHub Pages is serving an older cached <code>choice.html</code> or the IDs don’t match.</p>
+          </div>`;
+        return;
+      }
 
-    const noSubtexts = [
-      "Let’s try that again (politely).",
-      "Your finger slipped. It happens.",
-      "We can redo this. I believe in you.",
-      "I’m giving you a mulligan.",
-      "Be serious.",
-      "Choose wisely."
-    ];
+      const noHeadlines = [
+        "I think you hit the wrong button...",
+        "alright time to clean up the shenaningans",
+        "Okay, but like… try Yes?",
+        "I’m going to pretend you didn’t mean that.",
+        "Last chance before I start crying.",
+        "Alright this is getting ridiculous 😂"
+      ];
 
-    if (answer === "yes") {
-      // YES -> final gif + your comments
-      pageImage.src = "images/quest_for_camelot_final_yes.gif";
-      pageImage.alt = "Yes gif";
+      const noSubtexts = [
+        "Let’s try that again (politely).",
+        "Your finger slipped. It happens.",
+        "We can redo this. I believe in you.",
+        "I’m giving you a mulligan.",
+        "Be serious.",
+        "Choose wisely."
+      ];
 
-      headline.textContent = "finally";
-      subtext.textContent = "jesus christ dude";
-
-      // hide buttons on final yes screen
-      buttons.style.display = "none";
-    } else {
-      // NO -> rotate through different NO gifs
       const noGifs = [
         "images/ron_unsure.gif",
         "images/dead_broad_off_the_table.gif",
@@ -78,7 +77,18 @@
         "images/ron_unsure.gif"
       ];
 
-      // Pick gif + text based on n
+      if (answer === "yes") {
+        pageImage.src = "images/quest_for_camelot_final_yes.gif";
+        pageImage.alt = "Yes gif";
+
+        headline.textContent = "finally";
+        subtext.textContent = "jesus christ dude";
+
+        buttons.style.display = "none";
+        return;
+      }
+
+      // NO path
       const gifIndex = Math.min(n - 1, noGifs.length - 1);
       pageImage.src = noGifs[gifIndex];
       pageImage.alt = "No gif";
@@ -87,9 +97,9 @@
       headline.textContent = noHeadlines[textIndex];
       subtext.textContent = noSubtexts[textIndex];
 
-      // IMPORTANT: increment n when "No" is clicked again
+      // CRITICAL: increment NO click counter
       noBtn.href = `choice.html?answer=no&n=${n + 1}`;
-    }
+    });
   </script>
 </body>
 </html>
