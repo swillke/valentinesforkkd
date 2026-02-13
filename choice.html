@@ -41,7 +41,6 @@
     const buttons = document.getElementById("buttons");
     const noBtn = document.getElementById("noBtn");
 
-    // Customize your escalating "No" placeholders here
     const noHeadlines = [
       "I think you hit the wrong button...",
       "alright time to clean up the shenaningans",
@@ -68,21 +67,28 @@
       headline.textContent = "finally";
       subtext.textContent = "jesus christ dude";
 
-      // Optional: hide buttons on the final yes screen
+      // hide buttons on final yes screen
       buttons.style.display = "none";
     } else {
-    // NO -> rotate through different NO gifs
-    const noGifs = [
-      "images/ron_unsure.gif",
-      "images/dead_broad_off_the_table.gif",
-      "images/ron_unsure.gif",
-      "images/ron_unsure.gif"
-    ];
+      // NO -> rotate through different NO gifs
+      const noGifs = [
+        "images/ron_unsure.gif",
+        "images/dead_broad_off_the_table.gif",
+        "images/ron_unsure.gif",
+        "images/ron_unsure.gif"
+      ];
 
-    // Pick gif based on how many times "No" was clicked
-    const gifIndex = Math.min(n - 1, noGifs.length - 1);
-    pageImage.src = noGifs[gifIndex];
-    pageImage.alt = "No gif";
+      // Pick gif + text based on n
+      const gifIndex = Math.min(n - 1, noGifs.length - 1);
+      pageImage.src = noGifs[gifIndex];
+      pageImage.alt = "No gif";
+
+      const textIndex = Math.min(n - 1, noHeadlines.length - 1);
+      headline.textContent = noHeadlines[textIndex];
+      subtext.textContent = noSubtexts[textIndex];
+
+      // IMPORTANT: increment n when "No" is clicked again
+      noBtn.href = `choice.html?answer=no&n=${n + 1}`;
     }
   </script>
 </body>
